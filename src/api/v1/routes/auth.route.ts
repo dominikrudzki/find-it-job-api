@@ -1,7 +1,8 @@
-import express from 'express';
+import express from 'express'
+
 const router = require('express').Router()
 
-router.get('/', (req: express.Request,res: express.Response) => {
+router.get('/v1', (req: express.Request, res: express.Response) => {
     res.send('Auth route')
 })
 
