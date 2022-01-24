@@ -15,7 +15,8 @@ const getJobs = require('./api/v1/routes/get-jobs.route')
 app.use('/api', getJobs)
 const register = require('./api/v1/routes/register.route')
 app.use('/api', register)
-
+const login = require('./api/v1/routes/login.route')
+app.use('/api', login)
 
 app.listen(process.env.PORT, () => {
     console.log(`App listening on port ${process.env.PORT}`)
