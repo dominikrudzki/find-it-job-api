@@ -13,6 +13,8 @@ const getJob = require('./api/v1/routes/get-job.route')
 app.use('/api', getJob)
 const getJobs = require('./api/v1/routes/get-jobs.route')
 app.use('/api', getJobs)
+const register = require('./api/v1/routes/register.route')
+app.use('/api', register)
 
 
 app.listen(process.env.PORT, () => {
