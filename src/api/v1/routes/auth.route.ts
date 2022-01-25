@@ -1,9 +1,9 @@
 import express from 'express'
 
-const router = require('express').Router()
+const router = express.Router()
 
 router.get('/v1', (req: express.Request, res: express.Response) => {
     res.send('Auth route')
 })
 
-module.exports = router
+export {router as authRoute}

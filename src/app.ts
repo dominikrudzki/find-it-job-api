@@ -1,21 +1,22 @@
-require('dotenv').config({path: __dirname + '/config/.env'})
+import dotenv from 'dotenv'
 import express from 'express'
+import cors from 'cors'
 
-const cors = require('cors')
+import {authRoute} from './api/v1/routes/auth.route'
+import {getJob} from './api/v1/routes/get-job.route'
+import {getJobs} from './api/v1/routes/get-jobs.route'
+import {register} from './api/v1/routes/register.route'
+import {login} from './api/v1/routes/login.route'
+
 const app = express()
-
 app.use(cors())
 app.use(express.json())
+dotenv.config()
 
-const authRoute = require('./api/v1/routes/auth.route')
 app.use('/api', authRoute)
-const getJob = require('./api/v1/routes/get-job.route')
 app.use('/api', getJob)
-const getJobs = require('./api/v1/routes/get-jobs.route')
 app.use('/api', getJobs)
-const register = require('./api/v1/routes/register.route')
 app.use('/api', register)
-const login = require('./api/v1/routes/login.route')
 app.use('/api', login)
 
 app.listen(process.env.PORT, () => {

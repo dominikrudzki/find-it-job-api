@@ -13,4 +13,4 @@ router.get('/v1/get-job/:jobId', async (req: express.Request, res: express.Respo
     }
 })
 
-module.exports = router
+export {router as getJob}
