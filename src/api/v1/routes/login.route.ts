@@ -8,7 +8,7 @@ import {authenticateToken} from "../../../middlewares/authenticateToken";
 const router = express.Router()
 dotenv.config()
 
-router.post('/v1/login', async (req: any, res: any) => {
+router.post('/v1/login', async (req: express.Request, res: express.Response) => {
 
     try {
         const {email, password} = req.body
@@ -58,7 +58,7 @@ router.post('/v1/login', async (req: any, res: any) => {
     }
 })
 
-router.post('/v1/login-test', authenticateToken, async (req: any, res: any) => {
+router.post('/v1/login-test', authenticateToken, async (req: express.Request, res: express.Response) => {
     console.log('it works')
 })
 

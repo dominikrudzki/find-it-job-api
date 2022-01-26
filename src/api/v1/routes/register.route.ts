@@ -4,7 +4,7 @@ import {pool} from "../../../db"
 
 const router = express.Router()
 
-router.post('/v1/register', async (req: any, res: any) => {
+router.post('/v1/register', async (req: express.Request, res: express.Response) => {
 
     try {
         const {account_type, email, password} = req.body
