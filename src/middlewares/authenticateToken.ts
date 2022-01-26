@@ -5,7 +5,7 @@ export const authenticateToken = async (req: express.Request, res: express.Respo
 
     if (!req.headers.authorization) return res.status(401).json({message: 'JWT Token not found'})
 
-    const bearer = req.headers.authorization.split(' ')
+    const bearer: string[] = req.headers.authorization.split(' ')
 
     try {
         jwt.verify(bearer[1], process.env.ACCESS_TOKEN_SECRET!)
