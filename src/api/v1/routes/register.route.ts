@@ -41,8 +41,8 @@ router.post(
                     }
                 )
             })
-        } catch (err: any) {
-            res.status(500).json({error: err.message})
+        } catch (err) {
+            res.status(500).json({error: 'Server error'})
         }
     })
 
