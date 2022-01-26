@@ -22,18 +22,9 @@ router.post(
         try {
             const {email, password} = req.body
 
-            if (
-                !(email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/) &&
-                    password.length >= 5)
-            ) {
-                return res.status(400).json({error: 'Password or email invalid)'})
-            }
-
             const db_user = await pool.query('SELECT * FROM "user" WHERE email = $1', [email.toLowerCase()])
 
-            if (db_user.rows.length === 0) {
-                return res.status(404).json({error: 'User does not exist'})
-            }
+            if (db_user.rows.length === 0) return res.status(404).json({error: 'User does not exist'})
 
             bcrypt.compare(password, db_user.rows[0].password, async (err: any, result: any) => {
                 if (err) {
@@ -63,12 +54,16 @@ router.post(
                 }
             })
         } catch (err: any) {
+            console.log('erro')
             res.status(500).json({error: err.message})
         }
     })
 
-router.post('/v1/login-test', authenticateToken, async (req: express.Request, res: express.Response) => {
-    console.log('it works')
-})
+router.post(
+    '/v1/login-test',
+    authenticateToken,
+    async (req: express.Request, res: express.Response) => {
+        res.status(200).json({status: 'You are logged in'})
+    })
 
 export {router as login}
