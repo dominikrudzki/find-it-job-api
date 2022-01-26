@@ -3,7 +3,7 @@ import express from 'express'
 import bcrypt from 'bcrypt'
 import {pool} from "../../../db"
 import jwt from 'jsonwebtoken'
-import {auth} from "../../../middlewares/auth";
+import {authenticateToken} from "../../../middlewares/authenticateToken";
 
 const router = express.Router()
 dotenv.config()
@@ -40,7 +40,7 @@ router.post('/v1/login', async (req: any, res: any) => {
                 const refreshToken = jwt.sign(
                     {},
                     process.env.REFRESH_TOKEN_SECRET!,
-                    {expiresIn: '10s'} //90d
+                    {expiresIn: '90d'}
                 )
 
                 await pool.query(
@@ -58,7 +58,7 @@ router.post('/v1/login', async (req: any, res: any) => {
     }
 })
 
-router.post('/v1/logina', auth, async (req: any, res: any) => {
+router.post('/v1/login-test', authenticateToken, async (req: any, res: any) => {
     console.log('it works')
 })
 
