@@ -2,7 +2,6 @@ import dotenv from 'dotenv'
 import express from 'express'
 import cors from 'cors'
 
-import {authRoute} from './api/v1/routes/auth.route'
 import {getJob} from './api/v1/routes/get-job.route'
 import {getJobs} from './api/v1/routes/get-jobs.route'
 import {register} from './api/v1/routes/register.route'
@@ -13,7 +12,6 @@ app.use(cors())
 app.use(express.json())
 dotenv.config()
 
-app.use('/api', authRoute)
 app.use('/api', getJob)
 app.use('/api', getJobs)
 app.use('/api', register)
