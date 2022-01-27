@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken'
-import express from "express";
-import {pool} from "../db"
-
+import express from "express"
+import { pool } from "../config/db"
 
 export const authenticateToken = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
 
