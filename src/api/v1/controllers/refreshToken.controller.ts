@@ -1,12 +1,8 @@
-import express from "express";
-import dotenv from "dotenv";
-import jwt from "jsonwebtoken";
-import {pool} from "../../../db"
+import express from "express"
+import jwt from "jsonwebtoken"
+import { pool } from "../../../config/db"
 
-const router = express.Router()
-dotenv.config()
-
-router.post('/v1/refresh-token', async (req: express.Request, res: express.Response) => {
+export const refreshToken = async (req: express.Request, res: express.Response) => {
 
     if (!req.headers.authorization) {
         return res.status(401).json({message: 'Token not found'})
@@ -36,6 +32,4 @@ router.post('/v1/refresh-token', async (req: express.Request, res: express.Respo
         console.log(err)
         return res.status(403).json({error: 'Unauthorized'}) // invalid token
     }
-})
-
-export {router as refreshToken}
+}
