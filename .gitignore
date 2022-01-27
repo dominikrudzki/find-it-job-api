@@ -144,7 +144,7 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
+src/config/.env
 .env.test
 
 # parcel-bundler cache (https://parceljs.org/)
@@ -218,3 +218,5 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Rest
+src/public/resources/company_logos/*
