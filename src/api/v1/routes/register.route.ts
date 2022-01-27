@@ -1,5 +1,5 @@
 import express from 'express'
-import bcrypt from 'bcrypt'
+import bcrypt, {hash} from 'bcrypt'
 import {pool} from "../../../db"
 import {body, validationResult} from 'express-validator';
 
@@ -19,15 +19,18 @@ router.post(
         try {
             const {employer, email, password} = req.body
 
-            const db_user = await pool.query('SELECT * FROM "user" WHERE email = $1', [email.toLowerCase()])
+            const db_user = await pool.query(
+                'SELECT id FROM "user" WHERE email = $1',
+                [email.toLowerCase()]
+            )
 
             if (db_user.rows.length !== 0) {
                 return res.status(409).json({error: 'User with this email already exists'})
             }
 
-            bcrypt.hash(password, 10, async (err: any, hash: any) => {
+            bcrypt.hash(password, 10, async (err: Error | undefined, hash: string) => {
                 if (err) {
-                    return res.status(err).json({error: 'Server error'})
+                    return res.status(500).json({error: 'Server error'})
                 }
                 await pool.query(
                     'INSERT INTO "user" (email, password, employer) VALUES ($1, $2, $3)',
