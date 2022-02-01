@@ -2,8 +2,9 @@ import dotenv from 'dotenv'
 import express from 'express'
 import cors from 'cors'
 import { validatePath } from "./middlewares/validatePath"
-import job from "./api/v1/routes/job.route"
-import auth from "./api/v1/routes/auth.route"
+import job from "./api/v1/routes/job"
+import auth from "./api/v1/routes/auth"
+import company from "./api/v1/routes/company"
 
 const app = express()
 
@@ -13,6 +14,7 @@ dotenv.config({path: __dirname + '/config/.env'})
 
 app.use('/api/v1', job)
 app.use('/api/v1', auth)
+app.use('/api/v1', company)
 app.use('/company_logos', express.static('src/public/resources/company_logos'), validatePath)
 
 app.listen(process.env.PORT, () => {
