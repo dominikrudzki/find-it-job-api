@@ -9,6 +9,8 @@ import { UserData } from "../../../models/UserData"
 
 export const login = async (req: express.Request, res: express.Response) => {
     const errors = validationResult(req)
+    // console.log(errors)
+
     if (!errors.isEmpty()) return res.status(400).json({errors: errors.array()})
 
     try {
@@ -30,7 +32,7 @@ export const login = async (req: express.Request, res: express.Response) => {
 
                 const accessToken = jwt.sign(
                     {email: email.toLowerCase(), employer: userData.rows[0].employer},
-                    process.env.ACCESS_TOKEN_SECRET + userData.rows[0].password,
+                    process.env.ACCESS_TOKEN_SECRET!,
                     {expiresIn: jwtConfig.accessToken.expiresIn}
                 )
 
@@ -41,7 +43,7 @@ export const login = async (req: express.Request, res: express.Response) => {
                 )
                 return res.status(200).json({accessToken, refreshToken})
             } else {
-                return res.status(404).json({error: 'Invalid password'})
+                return res.status(404).send('Invalid password')
             }
         })
     } catch (err) {
