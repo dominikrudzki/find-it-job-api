@@ -9,15 +9,14 @@ import { UserData } from "../../../models/UserData"
 
 export const login = async (req: express.Request, res: express.Response) => {
     const errors = validationResult(req)
-    // console.log(errors)
 
     if (!errors.isEmpty()) return res.status(400).json({errors: errors.array()})
 
     try {
         const {email, password} = req.body
 
-        const userData: QueryResult<UserData> = await pool.query(
-            'SELECT * FROM "user" WHERE email = $1',
+        const userData: QueryResult<UserData | any> = await pool.query(
+            'SELECT * FROM "user" INNER JOIN employer e on "user".id = e.user_id WHERE email = $1',
             [email.toLowerCase()]
         )
 
@@ -30,14 +29,21 @@ export const login = async (req: express.Request, res: express.Response) => {
                 return res.status(500).json({error: 'Server error'})
             } else if (result) {
 
+                const {employer, company_name, company_image} = userData.rows[0]
+
                 const accessToken = jwt.sign(
-                    {email: email.toLowerCase(), employer: userData.rows[0].employer},
+                    {
+                        email: email.toLowerCase(),
+                        employer,
+                        companyName: employer ? company_name : undefined,
+                        companyImage: employer ? company_image : undefined
+                    },
                     process.env.ACCESS_TOKEN_SECRET!,
                     {expiresIn: jwtConfig.accessToken.expiresIn}
                 )
 
                 const refreshToken = jwt.sign(
-                    {email: email.toLowerCase()},
+                    {email: email.toLowerCase()}, // FIXME add rest data
                     process.env.REFRESH_TOKEN_SECRET + userData.rows[0].password,
                     {expiresIn: jwtConfig.refreshToken.expiresIn}
                 )
