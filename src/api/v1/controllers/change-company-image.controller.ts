@@ -1,4 +1,4 @@
-import { imageUpload } from "../../../middlewares/imageUpload"
+import { imageUpload } from "../../../middlewares/image-upload"
 import express from "express"
 import { pool } from "../../../config/db"
 import jwt from "jsonwebtoken"

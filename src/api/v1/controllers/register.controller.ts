@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 import { pool } from "../../../config/db"
 import { validationResult } from 'express-validator'
 import { QueryResult } from "pg"
-import { UserData } from "../../../models/UserData"
+import { UserData } from "../../../models/user-data"
 
 export const register = async (req: express.Request, res: express.Response) => {
 

@@ -5,7 +5,7 @@ import { validationResult } from 'express-validator'
 import jwt from 'jsonwebtoken'
 import { jwtConfig } from "../../../config/jwt"
 import { QueryResult } from "pg"
-import { UserData } from "../../../models/UserData"
+import { UserData } from "../../../models/user-data"
 
 export const login = async (req: express.Request, res: express.Response) => {
     const errors = validationResult(req)

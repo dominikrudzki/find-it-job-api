@@ -1,9 +1,10 @@
 import express from "express"
 import { pool } from "../../../config/db"
 import { QueryResult } from "pg"
-import { Job } from "../../../models/Job"
 // @ts-ignore
-import { UserData } from "../../../models/UserData"
+import { Job } from "../../../models/job"
+// @ts-ignore
+import { UserData } from "../../../models/user-data"
 
 export const addJob = async (req: express.Request, res: express.Response) => {
 

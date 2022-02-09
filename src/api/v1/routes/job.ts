@@ -1,9 +1,9 @@
 import express from 'express'
-import { getJobs } from "../controllers/getJobs.controller"
-import { getJob } from "../controllers/getJob.controller"
-import { authenticateToken } from "../../../middlewares/authenticateToken"
-import { isEmployer } from "../../../middlewares/isEmployer"
-import { addJob } from "../controllers/addJob.controller"
+import { getJobs } from "../controllers/get-jobs.controller"
+import { getJob } from "../controllers/get-job.controller"
+import { authenticateToken } from "../../../middlewares/authenticate-token"
+import { isEmployer } from "../../../middlewares/is-employer"
+import { addJob } from "../controllers/add-job.controller"
 import { deleteJob } from "../controllers/detete-job.controller"
 
 const router = express.Router()

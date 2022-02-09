@@ -2,7 +2,7 @@ import express from "express"
 import jwt from "jsonwebtoken"
 import { pool } from "../../../config/db"
 import { QueryResult } from "pg"
-import { UserData } from "../../../models/UserData"
+import { UserData } from "../../../models/user-data"
 import { jwtConfig } from "../../../config/jwt"
 
 export const refreshToken = async (req: express.Request, res: express.Response) => {
@@ -38,7 +38,6 @@ export const refreshToken = async (req: express.Request, res: express.Response) 
 
         return res.status(200).json({accessToken: newAccessToken})
     } catch (err) {
-        console.log(err)
         return res.status(403).json({error: 'Unauthorized'}) // invalid token
     }
 }
