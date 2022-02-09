@@ -220,3 +220,4 @@ Temporary Items
 
 # Rest
 src/public/resources/company_logos/*
+!src/public/resources/company_logos/default.png
