@@ -19,7 +19,7 @@ export const changeCompanyImage = (req: express.Request, res: express.Response) 
                 if (err) {
                     return res.status(500).json({error: 'Server error'})
                 } else {
-                    return res.status(200).json({status: 'ok'})
+                    return res.status(200).json(req.file!.filename)
                 }
             }
         )
