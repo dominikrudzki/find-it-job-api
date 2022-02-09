@@ -8,9 +8,8 @@ export const getEmployerJobs = async (req: express.Request, res: express.Respons
             // @ts-ignore
             [req.jwtPayload.email]
         )
-        res.json(jobData.rows)
-        res.status(200)
+        res.status(200).json(jobData.rows)
     } catch (err) {
-        res.status(404).json({error: 'Server error'})
+        res.status(500).json({message: 'Server error'})
     }
 }
