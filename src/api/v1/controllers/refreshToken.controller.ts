@@ -16,16 +16,23 @@ export const refreshToken = async (req: express.Request, res: express.Response) 
     try {
         const refreshTokenPayload: any = jwt.decode(bearer[1], {complete: true})!.payload
 
-        const userData: QueryResult<UserData> = await pool.query(
-            'SELECT password FROM "user" WHERE email = $1',
+        const userData: QueryResult<UserData | any> = await pool.query(
+            'SELECT * FROM "user" INNER JOIN employer e on "user".id = e.user_id WHERE email = $1',
             [refreshTokenPayload.email.toLowerCase()]
         )
 
         jwt.verify(bearer[1], process.env.REFRESH_TOKEN_SECRET + userData.rows[0].password)
 
+        const {employer, company_name, company_image} = userData.rows[0]
+
         const newAccessToken = jwt.sign(
-            {email: refreshTokenPayload.email.toLowerCase(), employer: userData.rows[0].employer},
-            process.env.ACCESS_TOKEN_SECRET + userData.rows[0].password,
+            {
+                email: refreshTokenPayload.email.toLowerCase(),
+                employer: userData.rows[0].employer,
+                companyName: employer ? company_name : undefined,
+                companyImage: employer ? company_image : undefined
+            },
+            process.env.ACCESS_TOKEN_SECRET!,
             {expiresIn: jwtConfig.accessToken.expiresIn}
         )
 
