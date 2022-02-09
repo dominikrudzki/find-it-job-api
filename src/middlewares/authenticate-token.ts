@@ -3,7 +3,7 @@ import express from "express"
 
 export const authenticateToken = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     if (!req.headers.authorization) {
-        return res.status(401).json({status: 'Unauthorized'}) // Token not found
+        return res.status(401).json({message: 'Unauthorized'}) // Token not found
     }
 
     const bearer: string[] = req.headers.authorization.split(' ')
@@ -13,6 +13,6 @@ export const authenticateToken = async (req: express.Request, res: express.Respo
         req.jwtPayload = (<jwt.JwtPayload>jwt.verify(bearer[1], process.env.ACCESS_TOKEN_SECRET!))
         next()
     } catch (err) {
-        return res.status(401).json({error: 'Unauthorized'})
+        return res.status(401).json({message: 'Unauthorized'})
     }
 }
