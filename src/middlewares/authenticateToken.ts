@@ -2,9 +2,8 @@ import jwt from 'jsonwebtoken'
 import express from "express"
 
 export const authenticateToken = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-
     if (!req.headers.authorization) {
-        return res.status(401).json({message: 'Unauthorized'}) // Token not found
+        return res.status(401).json({status: 'Unauthorized'}) // Token not found
     }
 
     const bearer: string[] = req.headers.authorization.split(' ')
