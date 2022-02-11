@@ -42,10 +42,4 @@ router.post(
     refreshToken
 )
 
-// router.patch(
-//     '/recover-password',
-//     authenticateToken,
-//     recoverPassword
-// )
-
 export default router
