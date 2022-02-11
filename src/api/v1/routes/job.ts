@@ -9,7 +9,7 @@ import { deleteJob } from "../controllers/detete-job.controller"
 const router = express.Router()
 
 router.get(
-    '/get-jobs',
+    '/get-jobs/:count',
     getJobs
 )
 
