@@ -5,11 +5,16 @@ import { authenticateToken } from "../../../middlewares/authenticate-token"
 import { isEmployer } from "../../../middlewares/is-employer"
 import { addJob } from "../controllers/add-job.controller"
 import { deleteJob } from "../controllers/detete-job.controller"
+import { body } from "express-validator"
 
 const router = express.Router()
 
 router.get(
     '/get-jobs/:count',
+    body('remote').isBoolean(),
+    body('experience').isIn(['Junior', 'Mid', 'Senior']),
+    body('salary').isNumeric(),
+    body('skills').isArray(),
     getJobs
 )
 
