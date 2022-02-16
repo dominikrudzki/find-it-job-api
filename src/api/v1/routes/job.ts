@@ -9,8 +9,8 @@ import { body } from "express-validator"
 
 const router = express.Router()
 
-router.get(
-    '/get-jobs/:count',
+router.post(
+    '/get-jobs/:offset',
     body('remote').isBoolean(),
     body('experience').isIn(['Junior', 'Mid', 'Senior']),
     body('salary').isNumeric(),

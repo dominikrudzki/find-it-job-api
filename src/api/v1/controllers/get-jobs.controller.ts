@@ -6,29 +6,24 @@ export const getJobs = async (req: express.Request, res: express.Response) => {
 
     try {
         const {remote, experience, salary, skills} = req.body
-
-        const values = [parseInt(req.params.count)]
-
+        const values = [parseInt(req.params.offset)]
         let whereCondition = 'j.id >= 0'
 
         if (remote !== undefined) {
             values.push(remote)
             whereCondition += ` AND j.remote = $${values.length}`
         }
-
         if (experience !== undefined) {
             values.push(experience)
-            whereCondition += ` AND j.experience = $${values.length}`
+            whereCondition += ` AND LOWER(j.experience) = $${values.length}`
         }
-
         if (salary !== undefined) {
             values.push(salary)
             whereCondition += ` AND (j.salary ->> 'max')::DECIMAL > $${values.length}`
         }
-
         if (skills !== undefined) {
             values.push(skills)
-            whereCondition += ` AND to_json(array(select jsonb_array_elements(j.skills) ->> 'name'))::jsonb ?| $${values.length}`
+            whereCondition += ` AND to_json(array(select LOWER(jsonb_array_elements(skills) ->> 'name')))::jsonb ?| $${values.length}`
         }
 
         const jobData = await pool.query(
@@ -41,6 +36,6 @@ export const getJobs = async (req: express.Request, res: express.Response) => {
         )
         res.json(jobData.rows)
     } catch (err) {
-        res.status(404).json({error: 'Server error'})
+        res.status(500).json({error: 'Server error'})
     }
 }
