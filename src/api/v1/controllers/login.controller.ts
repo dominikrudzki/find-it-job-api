@@ -16,12 +16,16 @@ export const login = async (req: express.Request, res: express.Response) => {
         const {email, password} = req.body
 
         const userData: QueryResult<UserData | any> = await pool.query(
-            'SELECT * FROM "user" INNER JOIN employer e on "user".id = e.user_id WHERE email = $1',
+            `SELECT * 
+            FROM "user" 
+            LEFT JOIN employer e ON "user".id = e.user_id 
+            WHERE email = $1`,
             [email.toLowerCase()]
         )
 
+        console.log(userData.rows)
         if (userData.rows.length === 0) {
-            return res.status(404).json({error: 'User does not exist'})
+            return res.status(404).json({error: 'User does not exist'}) // <--
         }
 
         bcrypt.compare(password, userData.rows[0].password, async (err: Error | undefined, result: boolean) => {
