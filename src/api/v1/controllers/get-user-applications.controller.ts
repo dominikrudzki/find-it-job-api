@@ -1,12 +1,15 @@
-import express from "express"
+import { Request, Response } from "express"
 import { pool } from "../../../config/db"
 
-export const getUserApplications = async (req: express.Request, res: express.Response) => {
+export const getUserApplications = async (req: Request, res: Response) => {
     try {
         const applicationsData = await pool.query(
-            'SELECT j.id, j.name FROM job j JOIN job_application ja on j.id = ja.job_id JOIN "user" u on u.id = ja.user_id WHERE u.email = $1',
-            // @ts-ignore
-            [req.jwtPayload.email]
+            `SELECT j.id, j.name 
+            FROM job j 
+            JOIN job_application ja ON j.id = ja.job_id 
+            JOIN "user" u ON u.id = ja.user_id 
+            WHERE u.email = $1`,
+            [req.jwtPayload!.email]
         )
 
         res.status(200).json(applicationsData.rows)

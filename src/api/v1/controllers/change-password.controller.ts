@@ -1,35 +1,30 @@
-import express from 'express'
-import jwt from "jsonwebtoken"
+import { Request, Response } from "express"
 import bcrypt from 'bcrypt'
 import { pool } from "../../../config/db"
-import { jwtConfig } from "../../../config/jwt"
 import { UserData } from "../../../models/user-data"
 import { QueryResult } from "pg"
 
-export const changePassword = async (req: express.Request, res: express.Response) => {
+export const changePassword = async (req: Request, res: Response) => {
 
     try {
         const {password, newPassword} = req.body
 
         const userData: QueryResult<UserData> = await pool.query(
             'SELECT password FROM "user" WHERE email = $1',
-            // @ts-ignore
-            [req.jwtPayload.email.toLowerCase()]
+            [req.jwtPayload!.email]
         )
 
         bcrypt.compare(password, userData.rows[0].password, async (err: Error | undefined, result: boolean) => {
             if (err) {
-                return res.status(500).json({error: 'Server error'})
+                return res.status(500).json({message: 'Server error'})
             } else if (result) {
                 bcrypt.hash(newPassword, 10, async (err: Error | undefined, hash: string) => {
-                    if (err) {
-                        return res.status(500).json({error: 'Server error'})
-                    }
+
+                    if (err) return res.status(500).json({message: 'Server error'})
 
                     await pool.query(
                         'UPDATE "user" SET password = $1 WHERE email = $2',
-                        // @ts-ignore
-                        [hash, req.jwtPayload.email]
+                        [hash, req.jwtPayload!.email]
                     )
 
                     res.status(200).json({message: 'Password changed'})

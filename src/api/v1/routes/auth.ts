@@ -1,12 +1,12 @@
-import express from 'express'
+import { Router } from 'express'
 import { body } from 'express-validator'
 import { register } from "../controllers/register.controller"
-import { login, loginTest } from "../controllers/login.controller"
+import { login } from "../controllers/login.controller"
 import { authenticateToken } from "../../../middlewares/authenticate-token"
 import { refreshToken } from "../controllers/refresh-token.controller"
 import { changePassword } from "../controllers/change-password.controller"
 
-const router = express.Router()
+const router = Router()
 
 router.post(
     '/register',
@@ -21,12 +21,6 @@ router.post(
     body('email').isEmail(),
     body('password').isLength({min: 5}),
     login
-)
-
-router.post(
-    '/login-test',
-    authenticateToken,
-    loginTest
 )
 
 router.patch(

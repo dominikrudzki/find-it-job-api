@@ -1,7 +1,7 @@
-import express from 'express'
+import { Request, Response, NextFunction } from "express"
 import jwt from "jsonwebtoken"
 
-export const isEmployer = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+export const isEmployer = (req: Request, res: Response, next: NextFunction) => {
     const bearer: string[] = req.headers.authorization!.split(' ')
     const accessTokenPayload: any = jwt.decode(bearer[1], {complete: true})!.payload
 

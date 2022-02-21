@@ -1,7 +1,7 @@
-import express from 'express'
+import { Request, Response } from "express"
 import { pool } from "../../../config/db"
 
-export const getJobs = async (req: express.Request, res: express.Response) => {
+export const getJobs = async (req: Request, res: Response) => {
 
     try {
         const {remote, experience, salary, skills} = req.body
@@ -34,6 +34,7 @@ export const getJobs = async (req: express.Request, res: express.Response) => {
             LIMIT 5 OFFSET $1`,
             values
         )
+
         res.json(jobData.rows)
     } catch (err) {
         res.status(500).json({error: 'Server error'})

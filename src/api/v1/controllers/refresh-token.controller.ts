@@ -1,23 +1,25 @@
-import express from "express"
+import { Request, Response } from "express"
 import jwt from "jsonwebtoken"
 import { pool } from "../../../config/db"
 import { QueryResult } from "pg"
 import { UserData } from "../../../models/user-data"
 import { jwtConfig } from "../../../config/jwt"
+import { jwtPayload } from "../../../models/jwt-payload"
 
-export const refreshToken = async (req: express.Request, res: express.Response) => {
+export const refreshToken = async (req: Request, res: Response) => {
 
-    if (!req.headers.authorization) {
-        return res.status(401).json({message: 'Token not found'})
-    }
+    if (!req.headers.authorization) return res.status(401).json({message: 'Token not found'})
 
     const bearer: string[] = req.headers.authorization.split(' ')
 
     try {
-        const refreshTokenPayload: any = jwt.decode(bearer[1], {complete: true})!.payload
+        const refreshTokenPayload: jwtPayload = <jwtPayload>jwt.decode(bearer[1], {complete: true})!.payload
 
-        const userData: QueryResult<UserData | any> = await pool.query(
-            'SELECT * FROM "user" INNER JOIN employer e on "user".id = e.user_id WHERE email = $1',
+        const userData: QueryResult<UserData> = await pool.query(
+            `SELECT * 
+            FROM "user" 
+            LEFT JOIN employer e ON "user".id = e.user_id 
+            WHERE email = $1`,
             [refreshTokenPayload.email.toLowerCase()]
         )
 
@@ -38,6 +40,7 @@ export const refreshToken = async (req: express.Request, res: express.Response) 
 
         return res.status(200).json({accessToken: newAccessToken})
     } catch (err) {
-        return res.status(403).json({error: 'Unauthorized'}) // invalid token
+        console.log(err)
+        return res.status(403).json({message: 'Unauthorized'})
     }
 }
