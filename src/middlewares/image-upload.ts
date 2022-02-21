@@ -12,11 +12,11 @@ export const imageUpload = multer({
         }
     }),
     limits: {
-        fileSize: 4000000
+        fileSize: 200000 // 200 kb
     },
     fileFilter: async (req, file, cb) => {
         const ext = file.mimetype
-        if (ext !== 'image/jpg' && ext !== 'image/png') {
+        if (ext !== 'image/jpg' && ext !== 'image/png' && ext !== 'image/jpeg') {
             return cb(new Error())
         }
         cb(null, true)
