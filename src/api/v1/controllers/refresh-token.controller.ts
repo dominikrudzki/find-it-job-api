@@ -40,7 +40,6 @@ export const refreshToken = async (req: Request, res: Response) => {
 
         return res.status(200).json({accessToken: newAccessToken})
     } catch (err) {
-        console.log(err)
         return res.status(403).json({message: 'Unauthorized'})
     }
 }
