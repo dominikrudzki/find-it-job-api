@@ -11,7 +11,7 @@ export const authenticateToken = async (req: Request, res: Response, next: NextF
     try {
         req.jwtPayload = <jwtPayload>(<jwt.JwtPayload>jwt.verify(bearer[1], process.env.ACCESS_TOKEN_SECRET!))
         next()
-    } catch (err) {
-        return res.status(401).json({message: 'Unauthorized'})
+    } catch {
+        return res.status(401).end()
     }
 }

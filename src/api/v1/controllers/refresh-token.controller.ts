@@ -8,7 +8,7 @@ import { jwtPayload } from "../../../models/jwt-payload"
 
 export const refreshToken = async (req: Request, res: Response) => {
 
-    if (!req.headers.authorization) return res.status(401).json({message: 'Token not found'})
+    if (!req.headers.authorization) return res.status(401).end()
 
     const bearer: string[] = req.headers.authorization.split(' ')
 
@@ -39,7 +39,7 @@ export const refreshToken = async (req: Request, res: Response) => {
         )
 
         return res.status(200).json({accessToken: newAccessToken})
-    } catch (err) {
-        return res.status(403).json({message: 'Unauthorized'})
+    } catch {
+        return res.status(401).end()
     }
 }
