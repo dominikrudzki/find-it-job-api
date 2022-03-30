@@ -26,13 +26,13 @@ export const getJobs = async (req: Request, res: Response) => {
         }
 
         const jobData = await pool.query(
-            `SELECT j.id, j.name, e.company_image image, e.company_name company, j.remote, j.salary, j.experience, j.skills, COUNT(*) OVER() AS job_length 
+          `SELECT j.id, j.name, e.company_image image, e.company_name company, j.remote, j.salary, j.experience, j.skills, COUNT(*) OVER() AS job_length 
             FROM job j 
-            INNER JOIN employer e ON j.employer_id = e.id
+            INNER JOIN employer e ON j.employer_id = e.user_id
             WHERE ${whereCondition}
             ORDER BY j.id DESC 
             LIMIT 5 OFFSET $1`,
-            values
+          values
         )
 
         res.json(jobData.rows)
